@@ -1,23 +1,49 @@
-import logo from './logo.svg';
+/*global chrome*/
+
 import './App.css';
 
+import FileSaver from "file-saver";
+import axios from "axios";
+
 function App() {
+  
+  const callAPI = async ()=> {
+    console.log("Here")
+
+    const [currentTab] = await chrome.tabs.query({
+        active: true,
+        currentWindow: true,
+    });
+
+    let id = currentTab.id
+    let url = currentTab.url
+    let title = currentTab.title
+    var domain = url.hostname
+
+    chrome.cookies.getAll({
+      "url": url
+    }, function(cookie) {
+        axios.post("http://localhost:9000/generatePDF", {
+          url: url,
+          cookies: cookie
+        }, {
+          responseType: 'arraybuffer',
+          headers: {
+            'Accept': 'application/pdf'
+          }
+        }).then((response) => {
+          const blob = new Blob([response.data], { type: 'application/pdf' })
+          FileSaver(blob, title + ".pdf")
+          console.log(response);
+        }
+      ); 
+    });
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      Hello
+      <button onClick = { callAPI }>Button</button>
     </div>
   );
 }
