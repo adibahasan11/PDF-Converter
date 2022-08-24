@@ -1,9 +1,9 @@
 /*global chrome*/
 
-import './App.css';
-
 import FileSaver from "file-saver";
 import axios from "axios";
+
+import './App.css';
 
 function App() {
   
