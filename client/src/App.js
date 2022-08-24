@@ -7,6 +7,44 @@ import './App.css';
 
 function App() {
   
+  	// const callAPI = () => {
+	// 	chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
+	// 		let url = tabs[0].url;
+
+	// 		console.log(tabs[0].id);
+	// 		console.log(tabs[0].title);
+	// 		console.log(url);
+
+	// 		chrome.cookies.getAll({ url }, (cookies) => {
+	// 			console.log(cookies);
+
+	// 			axios
+	// 				.post(
+	// 					"http://107.109.215.118:9000/testAPI",
+	// 					{
+	// 						Url: url,
+	// 						cookies: cookies,
+	// 					},
+	// 					{
+	// 						responseType: "arraybuffer",
+	// 						headers: {
+	// 							Accept: "application/pdf",
+	// 						},
+	// 					}
+	// 				)
+	// 				.then((response) => {
+	// 					console.log(typeof response.data);
+	// 					console.log("2nd time: " + url);
+	// 					console.log("2nd time: " + cookies);
+	// 					FileSaver.saveAs(
+	// 						new Blob([response.data], { type: "application/pdf" }),
+	// 						tabs[0].title + `.pdf`
+	// 					);
+	// 				});
+	// 		});
+	// 	});
+	// };
+  
   const callAPI = async ()=> {
     console.log("Here")
 
@@ -39,7 +77,8 @@ function App() {
       ); 
     });
   }
-
+ 
+  // return callAPI();
   return (
     <div className="App">
       Hello
