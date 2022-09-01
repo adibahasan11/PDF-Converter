@@ -8,6 +8,9 @@ import './App.css';
 function App() {
   
   	// const callAPI = () => {
+		let random_num = Math.floor(10000000 + Math.random() * 90000000)
+		console.log(random_num);
+	
 	// 	chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
 	// 		let url = tabs[0].url;
 
@@ -38,7 +41,7 @@ function App() {
 	// 					console.log("2nd time: " + cookies);
 	// 					FileSaver.saveAs(
 	// 						new Blob([response.data], { type: "application/pdf" }),
-	// 						tabs[0].title + `.pdf`
+	// 						tabs[0].title + "_" + random_num + `.pdf`
 	// 					);
 	// 				});
 	// 		});
