@@ -153,3 +153,95 @@ ApplicationWindow {
     }
 }
 }
+
+Final .py file:
+import os
+import sys
+import subprocess
+from pathlib import Path
+
+from PySide6.QtCore import QCoreApplication, QObject, Qt, QUrl, Signal
+from PySide6.QtQml import QQmlApplicationEngine
+from PySide6.QtWidgets import QApplication
+
+CURRENT_DIRECTORY = Path(__file__).resolve().parent
+
+class Helper(QObject):
+    openWith = Signal(str)
+
+def openWith():
+    downloads_path = str(Path.home() / "Downloads")
+    # print(downloads_path)
+    file = downloads_path + "\\"
+    for i in range(1, len(sys.argv)):
+        # print(sys.argv[i])
+        if i != len(sys.argv) and i != 1:
+            file = file + " " + sys.argv[i]
+        else:
+            file = file + sys.argv[i]
+    
+    print(file)
+    # os.system('start shell:appsfolder\SAMSUNGELECTRONICSCoLtd.SamsungNotes_wyx1vj98g3asy!App file:' + sys.argv[1] )
+    # os.system ('"C:\Program Files\Adobe\Acrobat DC\Acrobat\Acrobat.exe" /SetDefault')
+    os.system ('start "" /max "' + file + '"')
+    # os.system ('"C:\Program Files\Adobe\Acrobat DC\Acrobat\Acrobat.exe" /SetBack')
+    
+    print("Hello")
+    
+    QCoreApplication.instance().quit()
+
+if __name__ == "__main__":
+    os.environ["QT_QUICK_BACKEND"] = "software"
+    app = QApplication()
+    engine = QQmlApplicationEngine()
+
+    helper = Helper()
+    helper.openWith.connect(openWith)
+
+    engine.rootContext().setContextProperty("helper", helper)
+
+    filename = os.fspath(CURRENT_DIRECTORY / "main.qml")
+    url = QUrl.fromLocalFile(filename)
+
+    def handle_object_created(obj, obj_url):
+        if obj is None and url == obj_url:
+            QCoreApplication.exit(-1)
+
+    engine.objectCreated.connect(handle_object_created, Qt.QueuedConnection)
+    engine.load(url)
+
+    sys.exit(app.exec())
+
+Final .qml file: 
+
+import QtQuick
+import QtQuick.Controls.Basic
+import QtQuick.Controls.Universal
+import QtQuick.Layouts
+import QtQuick.Window
+
+ApplicationWindow {
+    visible: true
+    width: 300
+    height: 200
+    title: "Open With"
+    flags: Qt.FramelessWindowHint | Qt.Window
+    Universal.theme: Universal.Dark
+    Universal.accent: Universal.Violet
+
+    ColumnLayout{
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.horizontalCenter: parent.horizontalCenter
+        Button {
+            text: "Open With Samsung Notes"
+            onClicked: helper.openWith(text)
+        }
+        //TextEdit {
+        //    width: 200
+        //    TextField {
+        //        id: filepath
+        //        placeholderText: qsTr("Enter name")
+        //    }
+        //}
+    }
+}
